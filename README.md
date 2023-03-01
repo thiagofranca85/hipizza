@@ -14,8 +14,8 @@
 ## Desenvolvedores
 
 - [@Everton](https://github.com/EvertonDenega)
-- [@Haiko](https://github.com/EvertonDenega)
-- [@Thiago Augusto França](https://github.com/Haipo31)
+- [@Haiko](https://github.com/Haipo31)
+- [@Thiago Augusto França](https://github.com/thiagofranca85)
 - [@Jean C. Niehues](https://github.com/jeancnn)
 - [@Lucas](https://github.com/lucasbnu0)
 - [@Adriano Jimenes](https://github.com/adrianojimenes)
