@@ -12,8 +12,8 @@ class User(SQLModel, table=True):
     password: str = Field(index=True)
     address: str = Field(index=True)
     
-    students: List["Student"] = Relationship(back_populates="classroom")
-    groups: List["Group"] = Relationship(back_populates="classroom")
+    orders: List["Order"] = Relationship(back_populates="user")
+    menus: List["Menu"] = Relationship(back_populates="user")
    
 
 
@@ -24,12 +24,10 @@ class Menu(SQLModel, table=True):
     description: str = Field()
     
     user_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    user: Optional[User] = Relationship(back_populates="users")
+    user: Optional[User] = Relationship(back_populates="menus")
     
-    students: List["Student"] = Relationship(back_populates="group")
-
-    
-    
+    orders: List["Order"] = Relationship(back_populates="menu")
+      
 
 class Order(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, nullable=False)
@@ -39,11 +37,11 @@ class Order(SQLModel, table=True):
     order_date: datetime = Field(index=True)
     total_price: float = Field(index=True)
 
-    id_classroom: Optional[int] = Field(default=None, foreign_key="classroom.id")
-    classroom: Optional[ClassRoom] = Relationship(back_populates="students")
+    user_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    user: Optional[User] = Relationship(back_populates="orders")
 
-    id_group: Optional[int] = Field(default=None, foreign_key="group.id")
-    group: List["Group"] = Relationship(back_populates="students")
+    menu_id: Optional[int] = Field(default=None, foreign_key="menu.id")
+    menu: List["Menu"] = Relationship(back_populates="orders")
 
 
 class Order_Menu(SQLModel, table=True):
@@ -52,7 +50,7 @@ class Order_Menu(SQLModel, table=True):
     price: float = Field(index=True)
 
     id_classroom: Optional[int] = Field(default=None, foreign_key="classroom.id")
-    classroom: Optional[ClassRoom] = Relationship(back_populates="students")
+    classroom: Optional[ClassRoom] = Relationship(back_populates="orders")
 
     id_group: Optional[int] = Field(default=None, foreign_key="group.id")
     group: List["Group"] = Relationship(back_populates="students")
