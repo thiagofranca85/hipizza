@@ -88,7 +88,7 @@
 # *************************************
 # HiPizza
 
-# from controller import 
+from controller.item_controller import buscaItems
 from fastapi import APIRouter, status, Response
 from models.model_hipizza import Item
 
@@ -112,3 +112,11 @@ router = APIRouter(
     response_description='Lista de Items Cadastrados',
     # status_code=status.HTTP_200_OK
 )
+def busca_items(response: Response):
+    lista_items = buscaItems()
+    if lista_items:
+        response.status_code = status.HTTP_200_OK
+        return JSONResponse(content=jsonable_encoder(lista_items))
+    else:
+        response.status = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND

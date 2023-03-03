@@ -146,6 +146,9 @@ def buscaGrupo():
 #         case _:
 #             break
 
+# def teste(v1 = 'Thiago'):
+#     print(v1)
+
 
 # enfiaAlunoNoGrupo(1,1)
 # cadastrarUser()
@@ -154,5 +157,6 @@ def buscaGrupo():
 # buscaItem(2)
 
 # editUser(1)
-deleteUser(1)
+# deleteUser(1)
+# teste('Jean')
 #buscaGrupo()
