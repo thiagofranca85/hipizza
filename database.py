@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, create_engine
-import models.model
+import models.model_hipizza
 
 engine = create_engine("sqlite:///database.db")
 

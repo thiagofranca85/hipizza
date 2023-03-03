@@ -1,6 +1,7 @@
 from database import engine
 from sqlmodel import Session, select
 from models.model import ClassRoom, Student, Group
+from models.model_hipizza import User, Item, Order
 from sqlalchemy.orm import selectinload
 
 import random
@@ -13,14 +14,79 @@ def cadastraClass():
         #session.refresh(new_class)
         print(new_class)
 
-def cadastrarStudent(idClassRoom):
+def cadastrarUser():
     with Session(engine) as session:
-        new_class = Student(id=None, name=input("Nome do aluno: "), contact=input("Contato do aluno: "), id_classroom=idClassRoom)
-        session.add(new_class)
+        new_user = User(id=None, name=input("Nome: "),
+                        email=input("Email: "),
+                        phone=input("Telefone: "),
+                        password=input("Senha: "),
+                        address=input("Endereço: ")   
+                        )
+        session.add(new_user)
         session.commit()
-        #session.refresh(new_class)
-        print(new_class)
+        #session.refresh(new_user)
+        print(new_user)
+
+def cadastrarItem():
+    with Session(engine) as session:
+        new_item = Item(id=None, name=input("Nome: "),
+                        price=input("Preço: "),
+                        description=input("Descrição: ") 
+                        )
+        session.add(new_item)
+        session.commit()
+        #session.refresh(new_item)
+        print(new_item)
+
+def buscaUser(id):
+    with Session(engine) as session:
+        statement = select(User).where(User.id==id)
         
+        results = session.exec(statement).first()
+        print(results)
+        return results
+    
+def buscaItem(id):
+    with Session(engine) as session:
+        statement = select(Item).where(Item.id==id)
+        
+        results = session.exec(statement).first()
+        print(results)
+        return results
+
+def editUser(userID):
+    with Session(engine) as session:
+        statement = select(User).where(User.id == userID)
+        results = session.exec(statement).first()
+        
+        # if not results:
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+        #         detail = {"message": f"No Student found with id {userID}"}
+        #     )
+        # else:
+        results.name = input("Novo Nome: ")
+
+        session.add(results)
+        session.commit()
+        session.refresh(results)
+        print(results)
+            # return JSONResponse(content=jsonable_encoder(results))
+        
+def deleteUser(userID):
+    with Session(engine) as session:
+        statement = select(User).where(User.id == userID)
+        results = session.exec(statement).first()
+        # if not results:
+        #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+        #         detail = {"message": f"No Student found with id: {userID}"}
+        #     )
+        # else:
+        session.delete(results)
+        session.commit()
+        print(f"Apagou o usuario com ID {userID}")
+            #Não sei exatamente o que retornar aqui
+        return True
+
 def cadastrarGrupo(idClassRoom):
     with Session(engine) as session:
         new_class = Group(id=None, name=input("Nome do grupo: "), description=input("Descrição do grupo: "), id_classroom=idClassRoom)
@@ -81,6 +147,12 @@ def buscaGrupo():
 #             break
 
 
-enfiaAlunoNoGrupo(1,1)
+# enfiaAlunoNoGrupo(1,1)
+# cadastrarUser()
+# cadastrarItem()
+# buscaUser(1)
+# buscaItem(2)
 
+# editUser(1)
+deleteUser(1)
 #buscaGrupo()
