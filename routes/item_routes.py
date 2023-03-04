@@ -88,7 +88,7 @@
 # *************************************
 # HiPizza
 
-from controller.item_controller import buscaItems
+from controller.item_controller import allItems, createItem, editItem, deleteItem
 from fastapi import APIRouter, status, Response
 from models.model_hipizza import Item
 
@@ -113,10 +113,57 @@ router = APIRouter(
     # status_code=status.HTTP_200_OK
 )
 def busca_items(response: Response):
-    lista_items = buscaItems()
-    if lista_items:
+    all_items = allItems()
+    if all_items:
         response.status_code = status.HTTP_200_OK
-        return JSONResponse(content=jsonable_encoder(lista_items))
+        return JSONResponse(content=jsonable_encoder(all_items))
     else:
         response.status = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+
+@router.post(
+    '/',
+    summary='Cadastrar Novo Item',
+    status_code=status.HTTP_200_OK
+)
+
+def create_item(item: Item, response: Response):
+    newItem = createItem(item)
+    if newItem:
+        response.status_code = status.HTTP_200_OK
+        return newItem
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+    
+@router.patch(
+    '/{id}',
+    summary='Editar um Item do Menu',
+    status_code=status.HTTP_200_OK        
+)
+
+def edit_item(itemID: int, item: Item, response: Response):
+    editted_item = editItem(itemID, item)
+    if editted_item:
+        response.status_code=status.HTTP_200_OK
+        return editted_item
+    else:
+        response.status_code=status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+    
+@router.delete(
+    '/{id}',
+    summary='Deleta um Item pelo ID',
+    status_code=status.HTTP_200_OK
+)
+
+def delete_Item(itemID: int, response: Response):
+    deletedItem = deleteItem(itemID)
+    if deletedItem:
+        response.status_code = status.HTTP_200_OK
+        return {
+            "Message": f"Item com ID {itemID} apagado com sucesso"
+        }
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND

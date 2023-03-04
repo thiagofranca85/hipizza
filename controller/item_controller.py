@@ -111,10 +111,40 @@ from typing import Optional, List
 import json
 
 
-def buscaItems():
+def allItems():
     with Session(engine) as session:
         statement = select(Item)
         
         results = session.exec(statement).all()
-        print(results)
+        # print(results)
         return results
+    
+def createItem(item:Item):
+    with Session(engine) as session:
+        new_item = Item(id=None, name=item.name, price=item.price, description=item.description)
+        session.add(new_item)
+        session.commit()
+        session.refresh(new_item)
+        return new_item
+    
+def editItem(itemID, item:Item):
+    with Session(engine) as session:
+        statement = select(Item).where(Item.id == itemID)
+        results = session.exec(statement).first()
+        results.name = item.name
+        results.price = item.price
+        results.description = item.description
+
+        session.add(results)
+        session.commit()
+        session.refresh(results)
+        print(results)
+        return JSONResponse(content=jsonable_encoder(results))
+
+def deleteItem(itemID):
+    with Session(engine) as session:
+        statement = select(Item).where(Item.id == itemID)
+        results = session.exec(statement).first()
+        session.delete(results)
+        session.commit()
+        return True
