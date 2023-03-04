@@ -1,86 +1,98 @@
-from controller.classroom_controller import buscaClasseAlunos, cadastraClasse
-from fastapi import APIRouter, status, Response
-from models.model import ClassRoom
-from models.model import Student
-
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
-
-import json
-
-
-from typing import Optional, List
-
+from controller.user_controller import editUser, cadastrarUser, deleteUser, buscaUser, allUsers
+from fastapi import APIRouter, Response
+from fastapi import status
+from models.model_hipizza import User
 
 router = APIRouter(
-    prefix='/classroom',
-    tags=['classroom']
+    prefix='/user',
+    tags=['user']
 )
 
-##
-### Busca/lista todos as Classes
+
+# Busca/lista usuarios cadatrados
 ##
 @router.get(
     '/',
-    summary='Retorna uma lista Classes/Salas',
-    description='Retorna uma lista de todas as Classes/Salas cadastradas em formato JSON',
-    response_description='Lista de Classes/Salas cadastradas',
-    #response_model=List[ClassRoom],
+    summary='Retorna uma lista de users',
+    description='Retorna uma lista de todos os users cadastrados em formato JSON',
+    response_description='Lista de users cadastrados.',
     status_code=status.HTTP_200_OK)
-
-def busca_classes(response: Response):
-    lista_classes = buscaClasseAlunos()
-    if lista_classes:
+def busca_users(response: Response):
+    lista_users = allUsers()
+    if lista_users:
         response.status_code = status.HTTP_200_OK
-        #return str(lista_classes)
-        #return JSONResponse(content=lista_classes)
-
-
-        return JSONResponse(content=jsonable_encoder(lista_classes))
-        #return JSONResponse(content=teste)
+        return lista_users
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND
 
-##
-### Busca/lista todos os alunos na Classes
-##
+
+# Busca de users por ID
+
 @router.get(
     '/{id}',
-    summary='Retorna uma lista alunos de uma Classes/Salas',
-    response_model=List[Student],
+    summary='Retorna um user com base no ID especificado',
+    description='Retorna um user cadastrado em formato JSON',
+    response_description='JSON do user cadastrado',
     status_code=status.HTTP_200_OK)
-
-def busca_classe_students(id:int, response: Response):
-    lista_classes_alunos = buscaClasseAlunos(id)
-    if lista_classes_alunos:
+def busca_userID(id: int, response: Response):
+    lista_user = buscaUser(id)
+    if lista_user:
         response.status_code = status.HTTP_200_OK
-        print(lista_classes_alunos)
-        return lista_classes_alunos
+        return lista_user
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND
 
 
-
-
-##
-### Cadastro de Classes
-##
+# Cadastro de users
 @router.post(
     '/',
-    summary='Cadastrar uma nova Classe',
-    status_code=status.HTTP_200_OK)    
-
-def cadastrar_classe(classe: ClassRoom, response: Response):
-    """
-    Cadastra uma nova Classe no sistema
-    - **name:** nome da Classe ou Sala
-    """
-    novaClasse = cadastraClasse(classe)
-    if novaClasse:
+    summary='Cadastrar um novo user',
+    description='Cadastra um novo user no banco de dados e retorna o user cadastrado',
+    response_description='Retorna o user cadastrado',
+    status_code=status.HTTP_200_OK)
+def cadastraUser(user: User, response: Response):
+    novoUser = cadastrarUser(user)
+    if novoUser:
         response.status_code = status.HTTP_200_OK
-        return novaClasse
+        return novoUser
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
-        return status.HTTP_404_NOT_FOUND        
+        return status.HTTP_404_NOT_FOUND
+
+
+# Editar user
+
+@router.patch(
+    '/{id}',
+    summary='Editar user com base no ID',
+    status_code=status.HTTP_200_OK)
+
+def editaUser(userID: int, user: User, response: Response):
+    alunoEditado = editUser(userID, user)
+    if alunoEditado:
+        response.status_code = status.HTTP_200_OK
+        return alunoEditado
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+
+
+# Deletar alunos
+
+@router.delete(
+    '/{id}',
+    summary='Apaga user com base no ID especificado',
+    status_code=status.HTTP_200_OK)
+def apagaUser(id: int, response: Response):
+
+    userApagado = deleteUser(id)
+    if userApagado:
+        response.status_code = status.HTTP_200_OK
+        return {
+            "mensagem": f"User com ID: {id} foi apagado com sucesso"
+        }
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
