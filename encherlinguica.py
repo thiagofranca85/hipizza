@@ -130,6 +130,86 @@ def buscaGrupo():
         print(results)
         return results
 
+## Criando order functions
+
+from datetime import datetime
+
+def todasOrders():
+    with Session(engine) as session:
+        statement = select(Order)
+
+        results = session.exec(statement).all()
+        print(results)
+        return results
+
+# Na controlar adicionar o parametro "order:Order" pra adicionar os valores
+def criaOrder(userID, itemID):
+    with Session(engine) as session:
+        new_order = Order(id=None, 
+                          status=input('Status: '),
+                          shipping_value=input('Frete: '),
+                          payment_method=input('Metodo Pagto: '),
+                          order_date=datetime.today(),
+                          total_price=input('Total: '),
+                          user_id=userID,
+                          item_id=itemID)
+        session.add(new_order)
+        session.commit()
+        return new_order
+    
+def buscaOrder(orderID: int = None):
+    with Session(engine) as session:
+        statement = select(Order).where(Order.id == orderID)
+
+        results = session.exec(statement).first()
+        print(results)
+        return results
+    
+# Na controlar adicionar o parametro "order:Order" pra adicionar os valores
+def editarOrder(orderID, order:Order = None):
+    with Session(engine) as session:
+        statement = select(Order).where(Order.id == orderID)
+        results = session.exec(statement).first()
+        results.status = input('Status: ')
+        results.shipping_value = input('Frete: ')
+        results.payment_method = input('Pagto: ')
+        results.total_price = input('Total: ')
+        results.user_id = input(f'Deseja Alterar? ID Atual {results.user_id} : ')
+        results.item_id = input(f'Deseja Alterar? ID Atual {results.item_id} : ')
+
+        session.add(results)
+        session.commit()
+        session.refresh(results)
+        print(results)
+        return results
+
+def deletarOrder(orderID):
+    with Session(engine) as session:
+        statement = select(Order).where(Order.id == orderID)
+        results = session.exec(statement).first()
+        session.delete(results)
+        session.commit()
+        print(f"Order com id {orderID} deletada com sucesso")
+        return True
+
+# Testando relacionamento entre tabelas buscando infos pelos IDs (FK)
+# e retornando o valor "name" como no exemplo abaixo
+
+def testeBuscaOrder(orderID):
+    with Session(engine) as session:
+        # Nao consegui fazer esse teste usando um statement só, deve haver uma maneira.
+        statement = select(Order, User).join(User).where(Order.id == orderID)
+        statement2 = select(Order, Item).join(Item).where(Order.id == orderID)
+
+        result = session.exec(statement).one()
+        result2 = session.exec(statement2).one()
+        user_id = result.User.name
+        item_id = result2.Item.name
+        
+        print(user_id)
+        print(item_id)
+
+
 
 # while True:
 #     print("Escolha uma das opções: ")
@@ -148,6 +228,13 @@ def buscaGrupo():
 
 # def teste(v1 = 'Thiago'):
 #     print(v1)
+
+# todasOrders()
+# criaOrder(3, 2)
+# buscaOrder(1)
+# testeBuscaOrder(3)
+# editarOrder(1)
+# deletarOrder(5)
 
 
 # enfiaAlunoNoGrupo(1,1)

@@ -9,16 +9,18 @@ from models.model_hipizza import User
 def allUsers():
     with Session(engine) as session:
         statement = select(User)
-
+    
         results = session.exec(statement).all()
         return results
 
 
 def cadastrarUser(user: User):
     with Session(engine) as session:
-        new_user = User(id=None, name=user.name,
+        new_user = User(id=None, 
+                        name=user.name,
                         email=user.email,
                         phone=user.phone,
+                        whatsapp=user.whatsapp,
                         password=user.password,
                         address=user.address
                         )

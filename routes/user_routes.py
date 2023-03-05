@@ -3,6 +3,9 @@ from fastapi import APIRouter, Response
 from fastapi import status
 from models.model_hipizza import User
 
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+
 router = APIRouter(
     prefix='/user',
     tags=['user']
@@ -21,8 +24,8 @@ def busca_users(response: Response):
     lista_users = allUsers()
     if lista_users:
         response.status_code = status.HTTP_200_OK
-        return lista_users
-    else:
+        return JSONResponse(content=jsonable_encoder(lista_users))
+    else:        
         response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND
 
@@ -39,7 +42,7 @@ def busca_userID(id: int, response: Response):
     lista_user = buscaUser(id)
     if lista_user:
         response.status_code = status.HTTP_200_OK
-        return lista_user
+        return JSONResponse(jsonable_encoder(lista_user))
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND
@@ -56,7 +59,7 @@ def cadastraUser(user: User, response: Response):
     novoUser = cadastrarUser(user)
     if novoUser:
         response.status_code = status.HTTP_200_OK
-        return novoUser
+        return JSONResponse(jsonable_encoder(novoUser))
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND
@@ -73,7 +76,7 @@ def editaUser(userID: int, user: User, response: Response):
     alunoEditado = editUser(userID, user)
     if alunoEditado:
         response.status_code = status.HTTP_200_OK
-        return alunoEditado
+        return JSONResponse(content=jsonable_encoder(alunoEditado))
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND

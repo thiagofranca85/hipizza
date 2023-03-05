@@ -1,86 +1,96 @@
-from controller.classroom_controller import buscaClasseAlunos, cadastraClasse
-from fastapi import APIRouter, status, Response
-from models.model import ClassRoom
-from models.model import Student
+from controller.order_controller import allOrders, createOrder, findOrder, editOrder, deleteOrder
+from fastapi import APIRouter, Response
+from fastapi import status
+from models.model_hipizza import Order, Item
 
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-import json
-
-
-from typing import Optional, List
-
+from typing import Optional
 
 router = APIRouter(
-    prefix='/classroom',
-    tags=['classroom']
+    prefix='/order',
+    tags=['order']
 )
 
-##
-### Busca/lista todos as Classes
-##
+# Busca Lista de Orders
 @router.get(
     '/',
-    summary='Retorna uma lista Classes/Salas',
-    description='Retorna uma lista de todas as Classes/Salas cadastradas em formato JSON',
-    response_description='Lista de Classes/Salas cadastradas',
-    #response_model=List[ClassRoom],
-    status_code=status.HTTP_200_OK)
+    summary='Retorna uma lista de pedidos',
+    description='Retorna uma lista de pedidos',
+    response_description='Lista de Pedidos Cadastrados',
+    status_code=status.HTTP_200_OK
+)
 
-def busca_classes(response: Response):
-    lista_classes = buscaClasseAlunos()
-    if lista_classes:
+def all_orders(response: Response):
+    all_orders = allOrders()
+    if all_orders:
         response.status_code = status.HTTP_200_OK
-        #return str(lista_classes)
-        #return JSONResponse(content=lista_classes)
-
-
-        return JSONResponse(content=jsonable_encoder(lista_classes))
-        #return JSONResponse(content=teste)
+        return JSONResponse(content=jsonable_encoder(all_orders))
     else:
-        response.status_code = status.HTTP_404_NOT_FOUND
+        response.status = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND
-
-##
-### Busca/lista todos os alunos na Classes
-##
-@router.get(
-    '/{id}',
-    summary='Retorna uma lista alunos de uma Classes/Salas',
-    response_model=List[Student],
-    status_code=status.HTTP_200_OK)
-
-def busca_classe_students(id:int, response: Response):
-    lista_classes_alunos = buscaClasseAlunos(id)
-    if lista_classes_alunos:
-        response.status_code = status.HTTP_200_OK
-        print(lista_classes_alunos)
-        return lista_classes_alunos
-    else:
-        response.status_code = status.HTTP_404_NOT_FOUND
-        return status.HTTP_404_NOT_FOUND
-
-
-
-
-##
-### Cadastro de Classes
-##
+    
 @router.post(
     '/',
-    summary='Cadastrar uma nova Classe',
-    status_code=status.HTTP_200_OK)    
+    summary='Cadastrar um Novo Pedido',
+    status_code=status.HTTP_200_OK
+)
 
-def cadastrar_classe(classe: ClassRoom, response: Response):
-    """
-    Cadastra uma nova Classe no sistema
-    - **name:** nome da Classe ou Sala
-    """
-    novaClasse = cadastraClasse(classe)
-    if novaClasse:
+def create_order(userID: int, itemID: int, quantity: int, order: Order, response: Response):
+    created_order = createOrder(userID, itemID, order, quantity)
+    if created_order:
         response.status_code = status.HTTP_200_OK
-        return novaClasse
+        return JSONResponse(content=jsonable_encoder(created_order))
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
-        return status.HTTP_404_NOT_FOUND        
+        return status.HTTP_404_NOT_FOUND
+    
+@router.get(
+    '/{id}',
+    summary='Busca um Pedido pelo ID',
+    status_code=status.HTTP_200_OK
+)
+
+def find_order(orderID: int, response: Response):
+    finded_order = findOrder(orderID)
+    if finded_order:
+        response.status_code = status.HTTP_200_OK
+        return JSONResponse(content=jsonable_encoder(finded_order))
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+
+@router.patch(
+    '/{id}',
+    summary='Editar um Pedido pelo ID',
+    status_code=status.HTTP_200_OK
+)
+
+def edit_order(orderID: int, order: Order, quantity: int, response: Response):
+    edited_order = editOrder(orderID, order, quantity)
+    if edited_order:
+        response.status_code = status.HTTP_200_OK
+        return JSONResponse(content=jsonable_encoder(edited_order))
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+    
+@router.delete(
+    '/{id}',
+    summary='Deleta um Pedido pelo ID',
+    status_code=status.HTTP_200_OK
+)
+
+def delete_order(orderID: int, response: Response):
+    delete_order = deleteOrder(orderID)
+    if delete_order:
+        response.status_code = status.HTTP_200_OK
+        return {
+            "Message": f"Pedido com ID {orderID} apagado com sucesso."
+        }
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return status.HTTP_404_NOT_FOUND
+    
+
