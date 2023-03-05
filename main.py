@@ -7,8 +7,8 @@ from database import engine
 
 
 app = FastAPI(
-    title='Grupo sortiator tabajara',
-    description='API de criação de salas e sorteio de usuários em grupos dentro de classe',
+    title='Hi Pizza',
+    description='API de Administração e Gerencia de Pedidos de Pizzaria',
     version='0.001beta',
     contact={
         "name": "Equipe os Confirmados",
@@ -29,7 +29,7 @@ from routes import all_routes
 
 @app.get("/", status_code=status.HTTP_200_OK)
 def root():
-    return "Welcome"
+    return "Bem Vindos a Hi Pizza"
 
 if __name__ == "__main__":
     import uvicorn

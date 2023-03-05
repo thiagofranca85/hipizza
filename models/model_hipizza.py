@@ -34,7 +34,7 @@ class Order(SQLModel, table=True):
     order_items: List["Order_Item"] = Relationship(back_populates="order")
 
     def calculate_total_price(self, items: List[Item]):
-        total = 0.0
+        total = self.shipping_value or 0.0
         for item in items:
             for order_item in self.order_items:
                 if order_item.item.id == item.id:

@@ -16,7 +16,7 @@ def allOrders():
 def createOrder(userID, itemID, order: Order, quantity: int):
     with Session(engine) as session:
         item = session.get(Item, itemID)
-        total_price = item.price * quantity
+        total_price = item.price * quantity + order.shipping_value
 
         new_order = Order(id=None, 
                           status=order.status,

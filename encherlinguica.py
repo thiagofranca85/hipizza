@@ -1,18 +1,18 @@
 from database import engine
 from sqlmodel import Session, select
-from models.model import ClassRoom, Student, Group
+# from models.model import ClassRoom, Student, Group
 from models.model_hipizza import User, Item, Order
 from sqlalchemy.orm import selectinload
 
 import random
 
-def cadastraClass():
-    with Session(engine) as session:
-        new_class = ClassRoom(id=None, name=input("Nome da Classe: "))
-        session.add(new_class)
-        session.commit()
-        #session.refresh(new_class)
-        print(new_class)
+# def cadastraClass():
+#     with Session(engine) as session:
+#         new_class = ClassRoom(id=None, name=input("Nome da Classe: "))
+#         session.add(new_class)
+#         session.commit()
+#         #session.refresh(new_class)
+#         print(new_class)
 
 def cadastrarUser():
     with Session(engine) as session:
@@ -87,48 +87,48 @@ def deleteUser(userID):
             #Não sei exatamente o que retornar aqui
         return True
 
-def cadastrarGrupo(idClassRoom):
-    with Session(engine) as session:
-        new_class = Group(id=None, name=input("Nome do grupo: "), description=input("Descrição do grupo: "), id_classroom=idClassRoom)
-        session.add(new_class)
-        session.commit()
-        #session.refresh(new_class)
-        print(new_class)
+# def cadastrarGrupo(idClassRoom):
+#     with Session(engine) as session:
+#         new_class = Group(id=None, name=input("Nome do grupo: "), description=input("Descrição do grupo: "), id_classroom=idClassRoom)
+#         session.add(new_class)
+#         session.commit()
+#         #session.refresh(new_class)
+#         print(new_class)
         
-def buscaClasseAlunos():
-    with Session(engine) as session:
-        statement = select(ClassRoom).options(selectinload(ClassRoom.students)).options(selectinload(ClassRoom.groups))
+# def buscaClasseAlunos():
+#     with Session(engine) as session:
+#         statement = select(ClassRoom).options(selectinload(ClassRoom.students)).options(selectinload(ClassRoom.groups))
         
-        results = session.exec(statement).all()
-        print(results)
-        return results
+#         results = session.exec(statement).all()
+#         print(results)
+#         return results
     
-#TEste!!! altamente errado!
-def enfiaAlunoNoGrupo(id_student, id_classe):
-    with Session(engine) as session:
-        statement1 = select(Student).where(Student.id == id_student)
-        statement2 = select(Group).where(Group.id_classroom == id_classe)
-        estudante = session.exec(statement1).first()
-        grupos = session.exec(statement2).all()
-        random.shuffle(grupos)
-        estudante.id_group = grupos[0].id
-        estudante.group = grupos[0]
-        print("Primeiro grupo: "+str(grupos[0]))
-        print ("Estudante: "+str(estudante))
-        print("Grupos: "+str(grupos))
-        session.add(estudante)
-        session.commit()
-        session.refresh(estudante)
-        return estudante
+# #TEste!!! altamente errado!
+# def enfiaAlunoNoGrupo(id_student, id_classe):
+#     with Session(engine) as session:
+#         statement1 = select(Student).where(Student.id == id_student)
+#         statement2 = select(Group).where(Group.id_classroom == id_classe)
+#         estudante = session.exec(statement1).first()
+#         grupos = session.exec(statement2).all()
+#         random.shuffle(grupos)
+#         estudante.id_group = grupos[0].id
+#         estudante.group = grupos[0]
+#         print("Primeiro grupo: "+str(grupos[0]))
+#         print ("Estudante: "+str(estudante))
+#         print("Grupos: "+str(grupos))
+#         session.add(estudante)
+#         session.commit()
+#         session.refresh(estudante)
+#         return estudante
         
 
-def buscaGrupo():
-    with Session(engine) as session:
-        statement = select(Group).options(selectinload(Group.students))
+# def buscaGrupo():
+#     with Session(engine) as session:
+#         statement = select(Group).options(selectinload(Group.students))
         
-        results = session.exec(statement).all()
-        print(results)
-        return results
+#         results = session.exec(statement).all()
+#         print(results)
+#         return results
 
 ## Criando order functions
 
