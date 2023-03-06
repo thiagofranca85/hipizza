@@ -14,8 +14,13 @@ def allUsers():
         return results
 
 
-def cadastrarUser(user: User):
+def createUser(user: User):
     with Session(engine) as session:
+        existing_user = session.query(User).filter(User.name == user.name).first()
+        if existing_user:
+            return {
+                "Message": f"Usuario com nome {user.name} já existe."
+                }
         new_user = User(id=None, 
                         name=user.name,
                         email=user.email,
@@ -30,7 +35,7 @@ def cadastrarUser(user: User):
         return new_user
 
 
-def buscaUser(id):
+def findUser(id):
     with Session(engine) as session:
         statement = select(User).where(User.id == id)
 

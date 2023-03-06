@@ -1,4 +1,4 @@
-from controller.user_controller import editUser, cadastrarUser, deleteUser, buscaUser, allUsers
+from controller.user_controller import editUser, createUser, deleteUser, findUser, allUsers
 from fastapi import APIRouter, Response
 from fastapi import status
 from models.model_hipizza import User
@@ -39,7 +39,7 @@ def busca_users(response: Response):
     response_description='JSON do user cadastrado',
     status_code=status.HTTP_200_OK)
 def busca_userID(id: int, response: Response):
-    lista_user = buscaUser(id)
+    lista_user = createUser(id)
     if lista_user:
         response.status_code = status.HTTP_200_OK
         return JSONResponse(jsonable_encoder(lista_user))
@@ -56,7 +56,7 @@ def busca_userID(id: int, response: Response):
     response_description='Retorna o user cadastrado',
     status_code=status.HTTP_200_OK)
 def cadastraUser(user: User, response: Response):
-    novoUser = cadastrarUser(user)
+    novoUser = createUser(user)
     if novoUser:
         response.status_code = status.HTTP_200_OK
         return JSONResponse(jsonable_encoder(novoUser))

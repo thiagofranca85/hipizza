@@ -12,7 +12,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('pizza.jpg');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form class="login100-form validate-form" id="register-form">
 					<span class="login100-form-logo">
 						<img id="imagempizza" src="pizzaicon.png">
 					</span>
@@ -22,11 +22,11 @@
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "nome">
-						<input class="input100" type="text" name="nome" placeholder="Nome">
+						<input class="input100" type="text" name="name" placeholder="Nome">
 					</div>
 
                     <div class="wrap-input100 validate-input" data-validate = "endereco">
-						<input class="input100" type="text" name="endereco" placeholder="Endereço">
+						<input class="input100" type="text" name="address" placeholder="Endereço">
 					</div>
 
                     <div class="wrap-input100 validate-input" data-validate = "email">
@@ -34,16 +34,23 @@
 					</div>
 
                     <div class="wrap-input100 validate-input" data-validate = "telefone">
-						<input class="input100" type="text" name="telefone" placeholder="Telefone">
+						<input class="input100" type="text" name="phone" placeholder="Telefone">
 					</div>
+					
+					<div class="wrap-input100">
+						<input class="input-checkbox100" id="whatsapp" type="checkbox" name="whatsapp" value="yes">
+						<label class="label-checkbox100" for="whatsapp">
+						  Tem WhatsApp?
+						</label>
+					  </div>
 
 					<div class="wrap-input100 validate-input" data-validate="Senha">
-						<input class="input100" type="password" name="senha" placeholder="Senha">
+						<input class="input100" type="password" name="password" placeholder="Senha">
 					</div>
 
 				
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" id="register-btn">
 							Cadastro
 						</button>
 					</div>
@@ -56,6 +63,6 @@
 			</div>
 		</div>
 	</div>
-
+	<script src="js/user.js"></script>
 </body>
 </html>
