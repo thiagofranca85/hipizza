@@ -1,7 +1,7 @@
 from controller.order_controller import allOrders, createOrder, findOrder, editOrder, deleteOrder
 from fastapi import APIRouter, Response
 from fastapi import status
-from models.model_hipizza import Order, Item
+from models.model_hipizza import Order
 
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
