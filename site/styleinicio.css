@@ -68,9 +68,12 @@ main {
 }
 .pizza-item {
     text-align: center;
-    max-width:250px;
+    max-width:350px;
     font-family:'Hepta Slab', Helvetica, Arial;
     margin:0 auto 50px auto;
+    background-color: #ffffffba;
+    padding: 2rem 2rem;
+    border-radius: 1rem;
 }
 .pizza-item a {
     display:flex;

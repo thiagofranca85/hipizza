@@ -12,51 +12,67 @@ const cs = function (el) {
 
 
 //Listagem das pizzas
-pizzaJson.map((item, index) => {
-    let pizzaItem = c('.models .pizza-item').cloneNode(true);
-
+const mostraTudo = async () => {
+    const response = await fetch('http://127.0.0.1:8000/item/');
+    let pizzaJson = await response.json(); //extract JSON from the http response
     
-    pizzaItem.setAttribute('data-key', index);
+    pizzaJson.forEach(item => 
+        item["sizes"] = ['Pequena', 'Média', 'Grande']
+    )
 
-    pizzaItem.querySelector('.pizza-item--img img').src = item.img;
-    pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
-    pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
-    pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
-    pizzaItem.querySelector('a').addEventListener('click', (e)=>{
-        e.preventDefault();
-       
-        modalQt = 1;
+    pizzaJson
+    console.log(pizzaJson)
 
-        let key = e.target.closest('.pizza-item').getAttribute('data-key');
-       
-        modalKey = key;
+    pizzaJson.map((item, index) => {
+        let pizzaItem = c('.models .pizza-item').cloneNode(true);
 
-        c('.pizzaBig img').src = pizzaJson[key].img;
-        c('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
-        c('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
-        c('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
-        c('.pizzaInfo--size.selected').classList.remove('selected');
-        cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
-            if(sizeIndex == 2) {
-                size.classList.add('selected');
-            };
-            size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
+        console.log(pizzaItem)
+
+        
+        pizzaItem.setAttribute('data-key', index);
+
+        pizzaItem.querySelector('.pizza-item--img img').src = "images/"+ item.image;
+        pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
+        pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
+        pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
+        pizzaItem.querySelector('a').addEventListener('click', (e)=>{
+            e.preventDefault();
+
+            modalQt = 1;
+
+            let key = e.target.closest('.pizza-item').getAttribute('data-key');
+
+            modalKey = key;
+
+            c('.pizzaBig img').src = "images/"+ pizzaJson[key].image;
+            c('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
+            c('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
+            c('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
+            c('.pizzaInfo--size.selected').classList.remove('selected');
+            cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
+                if(sizeIndex == 2) {
+                    size.classList.add('selected');
+                };
+                size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
+            });
+
+            c('.pizzaInfo--qt').innerHTML = modalQt;
+
+            c('.pizzaWindowArea').style.opacity = 0;
+            c('.pizzaWindowArea').style.display = 'flex';
+            setTimeout(()=>{
+                c('.pizzaWindowArea').style.opacity = 1;
+            }, 200);
+
+
+
         });
-
-        c('.pizzaInfo--qt').innerHTML = modalQt;
-
-        c('.pizzaWindowArea').style.opacity = 0;
-        c('.pizzaWindowArea').style.display = 'flex';
-        setTimeout(()=>{
-            c('.pizzaWindowArea').style.opacity = 1;
-        }, 200);
-
-
-
+        
+        c('.pizza-area').append(pizzaItem);
     });
-    
-    c('.pizza-area').append(pizzaItem);
-});
+}
+
+mostraTudo()
 
 
 //Eventos do Modal
