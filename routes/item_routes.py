@@ -62,7 +62,7 @@ def find_item(itemID: int, response: Response):
         return status.HTTP_404_NOT_FOUND
 
 @router.patch(
-    '/{id}',
+    '/{id}/',
     summary='Editar um Item do Menu',
     status_code=status.HTTP_200_OK        
 )

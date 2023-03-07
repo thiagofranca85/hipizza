@@ -70,7 +70,7 @@ def findOrder(orderID: int = None):
         print(results)
         return results
     
-def editOrder(orderID, order:Order, quantity: int):
+def editOrder(orderID: int, order:Order, quantity: int):
     with Session(engine) as session:
         statement = select(Order).where(Order.id == orderID)
         results = session.exec(statement).first()
@@ -83,7 +83,7 @@ def editOrder(orderID, order:Order, quantity: int):
 
         # Calcula o novo valor total baseado no preço e quantidade
         item = session.get(Item, results.item_id)
-        results.total_price = item.price * quantity
+        results.total_price = item.price * quantity + order.shipping_value
 
         order_item = session.query(Order_Item).filter_by(order_id=orderID).first()
 
