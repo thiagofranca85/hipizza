@@ -39,7 +39,7 @@ def busca_users(response: Response):
     response_description='JSON do user cadastrado',
     status_code=status.HTTP_200_OK)
 def busca_userID(id: int, response: Response):
-    lista_user = createUser(id)
+    lista_user = findUser(id)
     if lista_user:
         response.status_code = status.HTTP_200_OK
         return JSONResponse(jsonable_encoder(lista_user))

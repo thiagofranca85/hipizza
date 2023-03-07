@@ -1,31 +1,51 @@
 from database import engine
-from models.model_hipizza import Order, Item, Order_Item
+from models.model_hipizza import Order, Item, Order_Item, User
 
 from sqlmodel import Session
 from sqlmodel import select
 
 from datetime import datetime
 
+from fastapi.encoders import jsonable_encoder
+from sqlalchemy.orm import selectinload
+
+
 def allOrders():
+    teste = []
     with Session(engine) as session:
-        statement = select(Order)
+        statement = select(Order).options(selectinload(Order.order_items))
 
         results = session.exec(statement).all()
-        return results
+        # print(results)
+        print(results[0].order_items)
+        resultsJSON = (jsonable_encoder(results))
+        print(resultsJSON)
+        for order in resultsJSON:
+            statement_user = select(User).where(User.id == order["user_id"])
+            result_user = session.exec(statement_user).first()
+            
+            order["user"] = jsonable_encoder(result_user)
+            order["order_details"] = findOrder(order["id"])
+            print("Order\n", order)
+
+        return resultsJSON
 
 def createOrder(userID, itemID, order: Order, quantity: int):
     with Session(engine) as session:
         item = session.get(Item, itemID)
         total_price = item.price * quantity + order.shipping_value
-
+        statement_user = select(User).where(User.id == userID)
+        
+        user_ordering = session.exec(statement_user).first()
         new_order = Order(id=None, 
-                          status=order.status,
-                          shipping_value=order.shipping_value,
-                          payment_method=order.payment_method,
-                          order_date=datetime.now(),
-                          total_price=total_price,
-                          user_id=userID,
-                          item_id=itemID)
+                        status=order.status,
+                        shipping_value=order.shipping_value,
+                        payment_method=order.payment_method,
+                        order_date=datetime.now(),
+                        total_price=total_price,
+                        user_id=userID,
+                        user=user_ordering,
+                        item_id=itemID)
         
         session.add(new_order)
         session.commit()
@@ -44,9 +64,10 @@ def createOrder(userID, itemID, order: Order, quantity: int):
     
 def findOrder(orderID: int = None):
     with Session(engine) as session:
-        statement = select(Order).where(Order.id == orderID)
+        statement = select(Order).where(Order.id == orderID).options(selectinload(Order.order_items))
 
         results = session.exec(statement).first()
+        print(results)
         return results
     
 def editOrder(orderID, order:Order, quantity: int):
