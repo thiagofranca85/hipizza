@@ -26,7 +26,7 @@ const mostraTudo = async () => {
     pizzaJson.map((item, index) => {
         let pizzaItem = c('.models .pizza-item').cloneNode(true);
 
-        console.log(pizzaItem)
+        // console.log(pizzaItem)
 
         
         pizzaItem.setAttribute('data-key', index);

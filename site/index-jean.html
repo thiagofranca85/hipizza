@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Inicio</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style> @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap'); </style>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+
+    <h1 class="center">HI PIZZA</h1>
+
+    <div id="app">
+
+        <div class="models">
+            <div v-for="item in totalItems"  class="pizza-item">
+                <a href="" >
+                    <div class="pizza-item--img"><img width="100" :src="'images/'+item.image"/></div>
+
+                </a>
+                <div class="pizza-item--name">{{ item.name }}</div>
+                <div class="pizza-item--desc">{{ item.description }}</div>
+
+
+                
+                <div class="tamanho">
+                    <label for="cars">Escolha um tamanho:</label>
+                    <br>
+    
+                    <select name="tamanho" id="tamanho">
+                        <option value="P">Pequena</option>
+                        <option value="M">Média</option>
+                        <option value="G">Grande</option>
+                    </select>
+                </div>
+
+                <div class="quantidade">
+                    <label for="quantity">Quantidade:(max 10)</label>
+                    <br>
+                    <button >-</button><input type="number" :id="'quantity'+item.id" name="quantity" min="1" max="10" value="1"><button @click="addItemQtd(item.id)">+</button>
+                </div>
+                
+                <div class="pizza-item--price">R$ {{ item.price }}</div>
+                <div class="comprarBtn">
+                    <button @click="compraItem(item)">COMPRAR</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

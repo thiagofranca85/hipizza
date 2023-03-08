@@ -3,6 +3,7 @@ const userAction = async () => {
     const myJson = await response.json(); //extract JSON from the http response
     console.log(myJson);
     
+    
 
     myJson.forEach(element => {
         let para = document.createElement("p");
