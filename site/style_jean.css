@@ -1,0 +1,129 @@
+* {
+	margin: 0px; 
+	padding: 0px; 
+	box-sizing: border-box;
+}
+
+body, html {
+	height: 100%;
+	/* font-family: Poppins-Regular, sans-serif; */
+  font-family: 'Open Sans', 'Montserrat', sans-serif;
+  display: grid;
+}
+
+body {
+  background-image: url("wood2.jpg");
+  background-size: cover;
+  font-size:15px;
+  min-height:100vh;
+}
+
+
+
+/*---------------------------------------------*/
+a {
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+
+a:focus {
+	outline: none !important;
+}
+
+a:hover {
+	text-decoration: none;
+  color: #fff;
+}
+
+/*---------------------------------------------*/
+h1,h2,h3,h4,h5,h6 {
+	margin: 0px;
+}
+
+.center {
+  text-align: center;
+}
+
+h1.center {
+  font-size: 5rem;
+  color: #f1a40f;
+  margin: 8rem 0 3rem 0;
+  filter: drop-shadow(0 0 0.75rem crimson);
+}
+
+p {
+	font-family: Poppins-Regular;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
+}
+
+ul, li {
+	margin: 0px;
+	list-style-type: none;
+}
+
+
+.models {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  gap: 1rem;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.models .num_pedido {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.models .pizza-item {
+  background-color: #ffffffa4;
+  border-radius: 1rem;
+  padding: 2rem;
+  min-width: 360px;
+  height: min-content;
+  text-align: center;
+}
+
+.models .pizza-item .tamanho {
+  margin: 10px 0;
+}
+
+.quantidade button {
+  width: 2rem;
+}
+
+.models .pizza-item .pizza-item--price {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.models .pizza-item .pizza-item--name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.models .pizza-item .pizza-item--desc {
+  font-size: 1rem;
+}
+
+.comprarBtn {
+  text-align: center;
+}
+
+.comprarBtn button {
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  background-color: #164e00;
+  border-radius: .5rem;
+  border: 0px;
+  color: white;
+  cursor: pointer;
+}

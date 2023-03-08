@@ -20,13 +20,18 @@ def allOrders():
         print(results[0].order_items)
         resultsJSON = (jsonable_encoder(results))
         print(resultsJSON)
+        aux = 0
         for order in resultsJSON:
             statement_user = select(User).where(User.id == order["user_id"])
             result_user = session.exec(statement_user).first()
             
             order["user"] = jsonable_encoder(result_user)
             order["order_details"] = findOrder(order["id"])
-            print("Order\n", order)
+            order["items"] = jsonable_encoder(results[aux].order_items)
+            print("Order\n", results[aux].order_items)
+            aux = aux+1
+            
+            print("AUX", aux)
 
         return resultsJSON
 

@@ -26,7 +26,9 @@ def all_orders(response: Response):
     all_orders = allOrders()
     if all_orders:
         response.status_code = status.HTTP_200_OK
-        return JSONResponse(content=jsonable_encoder(all_orders))
+        print("Retorno da roda \n", all_orders)
+        return all_orders
+        # return JSONResponse(content=jsonable_encoder(all_orders))
     else:
         response.status = status.HTTP_404_NOT_FOUND
         return status.HTTP_404_NOT_FOUND

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Inicio</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style_jean.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -21,13 +21,13 @@
 
         <div class="models">
             <div v-for="item in totalItems"  class="pizza-item">
+                <div class="num_pedido">PEDIDO N: {{item.id}}</div>
                 <div class="pizza-item--name">Status: {{ item.order_details["status"] }}</div>
                 <div class="pizza-item--desc">Endereço: {{ item.user["address"] }}</div>
 
-
                 
                 <div class="quantidade">
-                    <p>Quantidade: {{item.quantity}}</p>
+                    <p>Quantidade: {{item.items[0].quantity}}</p>
                 </div>
                 
                 <div class="pizza-item--price">Total Price: R$ {{ item.total_price }}</div>
